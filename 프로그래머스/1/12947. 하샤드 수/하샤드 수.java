@@ -1,6 +1,6 @@
 class Solution {
     public boolean solution(int x) {
-        boolean answer;
+        boolean answer = true;
         int sum = 0;
         int y = x;
         while(x > 0) {
@@ -8,10 +8,7 @@ class Solution {
             sum += temp;
             x = x / 10;
         }
-        if(y % sum == 0) {
-            answer = true;
-        }
-        else {
+        if(y % sum != 0) {
             answer = false;
         }
         return answer;
