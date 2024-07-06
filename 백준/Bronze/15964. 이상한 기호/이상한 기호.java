@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class Main {
@@ -10,12 +11,12 @@ public class Main {
         numbers[0] = Integer.parseInt(arr[0]);
         numbers[1] = Integer.parseInt(arr[1]);
 
-        int result = calculate(numbers[0], numbers[1]);
+        long result = calculate(numbers[0], numbers[1]);
 
         System.out.println(result);
     }
 
-    public static int calculate(int A, int B) {
-        return (A+B)*(A-B);
+    public static long calculate(int A, int B) {
+        return (long) (A + B) *(A-B);
     }
 }
