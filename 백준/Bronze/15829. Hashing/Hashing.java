@@ -16,12 +16,14 @@ public class Main {
 
         String str = scanner.nextLine();
 
-        int sum = 0;
-        for(int i = 0; i < str.length(); i ++) {
+        long sum = 0;
+        long pow = 1;
+        for(int i = 0; i < strLength; i ++) {
             char alpha = str.charAt(i);
-            sum += hm.get(alpha) * Math.pow(31, i);
+            sum += (hm.get(alpha) * pow);
+            pow = (pow * 31) % 1234567891;
         }
 
-        System.out.println(sum);
+        System.out.println(sum % 1234567891);
     }
 }
