@@ -1,80 +1,87 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    private final static int[] DX = { 1, 0, -1, 0 };
-    private final static int[] DY = { 0, -1, 0, 1 };
-    private static int[][] map, distance;
-    private static int m, n;
-    private static boolean[][] isVisited;
-    
+    private static int[][] map;
+    private static boolean[][] visited;
+    private static int[][] distances;
+
+    private static int N = 0;
+    private static int M = 0;
+
+    private static int[][] directions = new int[][] {
+            {0,1}, //동
+            {0,-1}, //서
+            {1,0}, //남
+            {-1,0} //북
+    };
+
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder builder = new StringBuilder();
-        boolean isStartChecked = false;
-        String[] size = reader.readLine().split(" ");
-        n = Integer.parseInt(size[0]);
-        m = Integer.parseInt(size[1]);
-        int startX = -1, startY = -1;
-        
-        map = new int[n][m];
-        distance = new int[n][m];
-        isVisited = new boolean[n][m];
-        
-        for (int i = 0; i < n; i++) {
-            map[i] = Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            if (!isStartChecked) 
-                for (int j = 0; j < m; j++) 
-                    if (map[i][j] == 2) {
-                        isStartChecked = true;
-                        startX = i;
-                        startY = j;
-                        break;
-                    }
-        }
-        
-        bfs(startX, startY);
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) 
-                if (!isVisited[i][j] && map[i][j] == 1)
-                    builder.append(-1 + " ");
-                else 
-                    builder.append(distance[i][j] + " ");
-            builder.append("\n");
-        }
-        
-        System.out.print(builder.toString());
-    }
-    
-    private static void bfs(int x, int y) {
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y));
-        isVisited[x][y] = true;
-        
-        while (!queue.isEmpty()) {
-            Point current = queue.poll();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < 4; i++) {
-                int nextX = current.x + DX[i];
-                int nextY = current.y + DY[i];
-                
-                if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m) continue;
-                if (map[nextX][nextY] == 0) continue;
-                if (isVisited[nextX][nextY]) continue;
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-                queue.add(new Point(nextX, nextY));
-                distance[nextX][nextY] = distance[current.x][current.y] + 1;
-                isVisited[nextX][nextY] = true;
+        int destinationRow  = 0;
+        int destinationCol = 0;
+
+        map = new int[N][M];
+        visited = new boolean[N][M];
+        distances = new int[N][M];
+
+        for(int i = 0; i < N; i ++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < M; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                if(map[i][j] == 2) {
+                    destinationRow = i;
+                    destinationCol = j;
+                }
             }
         }
-    }
-}
 
-class Point {
-    public int x, y;
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        bfs(destinationRow, destinationCol);
+
+        for(int i = 0; i < N; i ++) {
+            for(int j = 0; j < M; j ++) {
+                if(!visited[i][j] && map[i][j] == 1) {
+                    sb.append(-1).append(" ");
+                    continue;
+                }
+                sb.append(distances[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    private static void bfs(int row, int col) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{row, col});
+        visited[row][col] = true;
+
+        while(!queue.isEmpty()) {
+            int[] currentCoordinate = queue.poll();
+            int currentRow = currentCoordinate[0];
+            int currentCol = currentCoordinate[1];
+
+            for(int[] direction : directions) {
+                int newRow = currentRow + direction[0];
+                int newCol = currentCol + direction[1];
+                if(newRow>=0 && newRow < N && newCol >= 0 && newCol < M &&
+                map[newRow][newCol] == 1 && !visited[newRow][newCol]) {
+                    queue.offer(new int[]{newRow, newCol});
+                    distances[newRow][newCol] = distances[currentRow][currentCol] + 1;
+                    visited[newRow][newCol] = true;
+                }
+            }
+        }
     }
 }
