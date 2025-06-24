@@ -5,6 +5,8 @@ import java.util.StringJoiner;
 import java.util.StringTokenizer;
 
 public class Main {
+    private static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -23,8 +25,10 @@ public class Main {
             }
 
             dfs(s, 0, 0, new int[6]);
-            System.out.println();
+            sb.append("\n");
         }
+
+        System.out.println(sb.toString().trim());
 
     }
 
@@ -34,7 +38,7 @@ public class Main {
             for (int i = 0; i < 6; i++) {
                 sj.add(String.valueOf(result[i]));
             }
-            System.out.println(sj);
+            sb.append(sj).append("\n");
             return;
         }
 
