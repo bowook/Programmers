@@ -1,37 +1,40 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    private static final String YES = "YES";
+    private static final String NO = "NO";
 
-        int T = Integer.parseInt(scanner.nextLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
 
-        for(int i = 0; i < T; i ++) {
-            String arr = scanner.nextLine();
-            String result = pushAndPop(arr);
+        StringBuilder sb = new StringBuilder();
 
-            System.out.println(result);
-        }
-    }
+        for (int i = 0; i < T; i++) {
+            String[] brackets = br.readLine().split("");
+            Stack<String> stack = new Stack<>();
 
-    public static String pushAndPop(String arr) {
-        Stack<Character> stack = new Stack<>();
-
-        for(int i = 0; i <arr.length(); i ++) {
-            if(arr.charAt(i) == '(') {
-                stack.push(arr.charAt(i));
-            }
-            else if(arr.charAt(i) == ')') {
-                if(stack.isEmpty()) {
-                    return "NO";
+            for (String bracket : brackets) {
+                if (bracket.equals("(")) {
+                    stack.push(bracket);
+                } else if (!stack.isEmpty() && bracket.equals(")")) {
+                    stack.pop();
+                } else if (stack.isEmpty() && bracket.equals(")")) {
+                    stack.push(bracket);
+                    break;
                 }
-                stack.pop();
             }
+
+            if (stack.isEmpty()) {
+                sb.append(YES).append("\n");
+                continue;
+            }
+            sb.append(NO).append("\n");
         }
-        if(!stack.isEmpty()) {
-            return "NO";
-        }
-        return "YES";
+
+        System.out.println(sb.toString().trim());
     }
 }
