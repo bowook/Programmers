@@ -1,58 +1,59 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.util.StringTokenizer;
 
 public class Main {
-    static int white = 0;
-    static int blue = 0;
+    private static int[][] paper;
+    private static int blueCounts = 0;
+    private static int whiteCounts = 0;
 
-    static int[][] paper;
+    //정사각형
+    //N은 한 변의 길이, 등비수열
+    //하얀색으으로 칠해진 칸은 0, 파란색을로 칠해진 칸은 1
+    //각 숫자 사이에는 빈칸이 하나씩 있다.
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
         paper = new int[N][N];
-        for(int i = 0; i < N; i ++) {
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < N; j ++) {
+            for (int j = 0; j < N; j++) {
                 paper[i][j] = Integer.parseInt(st.nextToken());
-
             }
         }
 
-        partition(0,0, N);
-        System.out.println(white);
-        System.out.println(blue);
+        recursive(0, 0, N);
+        System.out.println(whiteCounts);
+        System.out.println(blueCounts);
     }
 
-    public static void partition(int row, int col, int size) {
-        if(check(row,col,size)) {
-            if(paper[row][col] == 0) {
-                //흰색
-                white += 1;
-            }
-            else {
-                blue += 1;
+    private static void recursive(int row, int col, int x) {
+        //모두 같은 색인지 봐야함
+        if (isSameColor(row, col, x)) {
+            int color = paper[row][col];
+            if (color == 0) {
+                whiteCounts += 1;
+            } else if (color == 1) {
+                blueCounts += 1;
             }
             return;
         }
-        int newSize = size / 2;
-        //check 값이 false면 하나의 색만 있는게 아니니까 분할
-        partition(row,col,newSize);
-        partition(row+newSize, col, newSize);
-        partition(row, col + newSize, newSize);
-        partition(row + newSize, col + newSize, newSize);
+
+        int half = x / 2;
+        recursive(row, col, half);
+        recursive(row, col + half, half);
+        recursive(row + half, col, half);
+        recursive(row + half, col + half, half);
     }
 
-    public static boolean check(int row, int col, int size) {
+    private static boolean isSameColor(final int row, final int col, final int x) {
         int color = paper[row][col];
-
-        for(int i = row; i < row+size; i ++) {
-            for(int j = col; j < col + size; j ++) {
-                if(paper[i][j] != color) {
+        for (int i = row; i < row + x; i++) {
+            for (int j = col; j < col + x; j++) {
+                if (paper[i][j] != color) {
                     return false;
                 }
             }
