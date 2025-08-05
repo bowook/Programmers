@@ -1,17 +1,17 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
-    public int[] solution(long n) {
+    public List<Integer> solution(final long n) {
+        String[] array = String.valueOf(n).split("");
         
-        String str = "" + n;
-        int[] answer = new int[str.length()];
-        
-        int count = 0;
-        
-        while(n > 0) {
-            answer[count] = (int)(n%10);
-            n = n / 10;
-            count++;
+        List<Integer> list = new ArrayList<>();
+        for (String str : array) {
+            list.add(Integer.parseInt(str));
         }
+
+        Collections.reverse(list);
         
-        return answer;
+        return list;
     }
 }
