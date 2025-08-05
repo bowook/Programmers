@@ -1,13 +1,15 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
-    public String solution(int num) {
-        String answer = "";
-        int temp_num = num % 2;
-        if (temp_num != 0) {
-            answer = "Odd";
+    private static final String ODD = "Odd";
+    private static final String EVEN = "Even";
+    
+    public String solution(final int num) {
+        if (num % 2 == 0) {
+            return EVEN;
         }
-        else {
-            answer = "Even";
-        }
-        return answer;
+        
+        return ODD;
     }
 }
