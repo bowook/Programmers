@@ -1,9 +1,13 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
     public double solution(int[] arr) {
-        double answer = 0;
-        for(int i = 0; i < arr.length; i ++) {
-            answer += arr[i];
+        int sum = 0;
+        for(int number : arr) {
+            sum += number;
         }
-        return answer/arr.length;
+        
+        return (double) sum / arr.length;
     }
 }
