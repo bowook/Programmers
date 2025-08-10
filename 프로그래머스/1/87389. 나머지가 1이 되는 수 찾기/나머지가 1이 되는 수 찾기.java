@@ -1,11 +1,15 @@
+import java.util.*;
+
 class Solution {
-    public int solution(int n) {
-        int answer = 0;
-        for(int i = n-1; i > 0; i--) {
-            if(n%i == 1) {
+    public int solution(final int n) {
+        int answer = Integer.MAX_VALUE;
+        for (int i = 1; i < n; i ++) {
+            if (n % i == 1) {
                 answer = i;
+                break;
             }
         }
+        
         return answer;
     }
 }
