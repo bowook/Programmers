@@ -1,17 +1,13 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public long solution(long n) {
-        long answer = 0;
-        String temp = String.valueOf(n);
-        String[] arr = temp.split("");
-        String temp2 = "";
-        Arrays.sort(arr);
-        for (int i = arr.length-1; i >=0; i--) {
-            temp2 += arr[i];
-        }
-        answer = Long.valueOf(temp2);
+    public long solution(final long n) {
+        String str = String.valueOf(n);
+        char[] chars = str.toCharArray();
         
-        return answer;
+        Arrays.sort(chars);
+        StringBuilder sb = new StringBuilder(new String(chars)).reverse();
+        
+        return Long.parseLong(sb.toString());
     }
 }
