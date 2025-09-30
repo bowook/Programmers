@@ -1,16 +1,18 @@
 class Solution {
-    public boolean solution(int x) {
-        boolean answer = true;
+    //하샤드 수가 맞는지 아닌지를 판단하는 것임
+    public boolean solution(final int x) {
+        String[] strs = String.valueOf(x).split("");
+        
         int sum = 0;
-        int y = x;
-        while(x > 0) {
-            int temp = x % 10;
-            sum += temp;
-            x = x / 10;
+        for (String str : strs) {
+            int number = Integer.parseInt(str);
+            sum += number;
         }
-        if(y % sum != 0) {
-            answer = false;
+        
+        if (x % sum == 0) {
+            return true;
         }
-        return answer;
+        
+        return false;
     }
 }
