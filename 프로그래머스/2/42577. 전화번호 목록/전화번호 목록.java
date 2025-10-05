@@ -1,17 +1,14 @@
 import java.util.*;
 
 class Solution {
-    public boolean solution(final String[] phone_book) {
-        Set<String> phoneNumbers = new HashSet<>(Arrays.asList(phone_book));
+    public boolean solution(String[] phone_book) {
+        Arrays.sort(phone_book);
         
-        for (String number : phoneNumbers) {
-            for (int i = 1; i < number.length(); i++) {
-                if (phoneNumbers.contains(number.substring(0, i))) {
-                    return false;
-                }
+        for (int i = 0; i < phone_book.length - 1; i++) {
+            if (phone_book[i + 1].startsWith(phone_book[i])) {
+                return false;
             }
         }
-        
         return true;
     }
 }
