@@ -7,31 +7,34 @@ class Solution {
     private static final int DEPLOY = 100;
     
     public int[] solution(final int[] progresses, final int[] speeds) {
+        Deque<Integer> remainDaysDeque = findRemainDaysFor(progresses, speeds);
+        List<Integer> mappedRemainDays = new ArrayList<>();
+        
+        while(!remainDaysDeque.isEmpty()) {
+            int remainDays = remainDaysDeque.pollFirst();
+            int count = 1;
+            while (!remainDaysDeque.isEmpty() && remainDays >= remainDaysDeque.peekFirst()) {
+                remainDaysDeque.pollFirst();
+                count += 1;
+            }
+            mappedRemainDays.add(count);
+        }
+        
+        return mappedRemainDays.stream().mapToInt(Integer::intValue).toArray();
+    }
+    
+    private Deque<Integer> findRemainDaysFor(final int[] progresses, final int[] speeds) {
         Deque<Integer> deque = new ArrayDeque<>();
-        List<Integer> remainDaysList = new ArrayList<>();
         
         for (int i = 0; i < progresses.length; i ++) {
             int progress = progresses[i];
             int speed = speeds[i];
             
             int currentRemainDays = calculateRemainDays(progress, speed);
-            if (deque.isEmpty()) {
-                deque.addLast(currentRemainDays);
-                remainDaysList.add(1);
-                continue;
-            }
-            int beforeProgressRemainDays = deque.peekLast();
-            if (beforeProgressRemainDays >= currentRemainDays) {
-                int lastIndex = remainDaysList.size() - 1;
-                int lastValue = remainDaysList.get(lastIndex);
-                remainDaysList.set(lastIndex, lastValue + 1);
-                continue;
-            }
             deque.addLast(currentRemainDays);
-            remainDaysList.add(1);
         }
         
-        return remainDaysList.stream().mapToInt(Integer::intValue).toArray();
+        return deque;
     }
     
     private int calculateRemainDays(final int progress, final int speed) {
