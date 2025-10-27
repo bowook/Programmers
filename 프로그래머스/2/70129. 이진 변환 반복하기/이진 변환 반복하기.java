@@ -5,15 +5,8 @@ class Solution {
         int deletedZero = 0;
         
         while(!s.equals("1")) {
-            String transS = "";
-            for (char ch : s.toCharArray()) {
-                if (ch == '0') {
-                    deletedZero += 1;
-                    continue;
-                }
-                transS += ch;
-            }
-            
+            String transS = s.replaceAll("0", "");
+            deletedZero += s.length() - transS.length();
             int len = transS.length();
             s = Integer.toBinaryString(len);
             
