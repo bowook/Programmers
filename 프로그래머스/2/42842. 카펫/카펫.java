@@ -30,9 +30,10 @@ class Solution {
     private Deque<Integer> findWidthAndHeight(int size) {
         Deque<Integer> deque = new ArrayDeque<>();
         
+        int sqrtSize = (int)Math.sqrt(size);
         int height = 3;
         while(true) {
-            if (height >= size) {
+            if (height > sqrtSize) {
                 break;
             }
 
