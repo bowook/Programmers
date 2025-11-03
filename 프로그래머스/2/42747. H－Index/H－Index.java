@@ -2,32 +2,25 @@ import java.util.*;
 
 class Solution {
     
-    public int solution(final int[] citations) {
-        List<Integer> reverseOrderedCitations = sortReverse(citations);
-        
-        return findHIndex(reverseOrderedCitations);
-    }
-    
-    private int findHIndex(final List<Integer> reverseOrderedCitations) {
-        int hIndex = 0;
-        for (int i = 0; i < reverseOrderedCitations.size(); i ++) {
-            int quotationCounts = reverseOrderedCitations.get(i);
-            if (quotationCounts > hIndex) {
-                hIndex += 1;
-                continue;
+    public int solution(int[] citations) {
+        List<Integer> reverseList = sortReverse(citations);
+        int h = 0;
+        for (int i = 0; i < reverseList.size(); i ++) {
+            int value = reverseList.get(i);
+            if (value >= i + 1) {
+                h += 1;
             }
         }
-        
-        return hIndex;
+        return h;
     }
     
-    private List<Integer> sortReverse(final int[] citations) {
-        Arrays.sort(citations);
-        List<Integer> reverseOrderedCitations = new ArrayList<>();
-        for (int i = citations.length - 1; i >= 0; i --) {
-            reverseOrderedCitations.add(citations[i]);
+    private List<Integer> sortReverse(int[] citations) {
+        List<Integer> list = new ArrayList<>();
+        for (int citation : citations) {
+            list.add(citation);
         }
+        Collections.sort(list, Collections.reverseOrder());
         
-        return reverseOrderedCitations;
+        return list;
     }
 }
