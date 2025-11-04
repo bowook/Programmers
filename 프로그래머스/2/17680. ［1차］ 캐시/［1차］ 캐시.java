@@ -10,24 +10,24 @@ class Solution {
             return cities.length * CACHE_MISS;
         }
         
-        Deque<String> deque = new ArrayDeque<>();
+        LinkedHashMap<String, Boolean> cache = new LinkedHashMap<>(cacheSize, 0.75f, true);
         int latency = 0;
-
-        for (int i = 0; i < cities.length; i ++) {
-            String city = cities[i].toLowerCase();
-            if (deque.contains(city)) {
+        
+        for (String city : cities) {
+            String lowerCity = city.toLowerCase();
+            
+            if (cache.containsKey(lowerCity)) {
+                cache.get(lowerCity);
                 latency += CACHE_HIT;
-                deque.remove(city);
-                deque.addLast(city);
-                continue;
+            } else {
+                if (cache.size() >= cacheSize) {
+                    cache.remove(cache.keySet().iterator().next());
+                }
+                cache.put(lowerCity, true);
+                latency += CACHE_MISS;
             }
-            latency += CACHE_MISS;
-            if (deque.size() >= cacheSize) {
-                deque.pollFirst();
-            }
-            deque.addLast(city);
         }
-
+        
         return latency;
     }
 }
