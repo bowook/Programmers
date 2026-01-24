@@ -1,28 +1,33 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-public class Main {
+class Main {
+
+    private static final String EMPTY = " ";
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        int M = Integer.parseInt(input[1]);
+        String[] nAndM = br.readLine().split(EMPTY);
+        int N = Integer.parseInt(nAndM[0]);
+        int M = Integer.parseInt(nAndM[1]);
 
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> database = new HashMap<>();
+        for (int i = 0; i < N; i ++) {
+            String[] addressAndPassword = br.readLine().split(EMPTY);
+            String address = addressAndPassword[0];
+            String password = addressAndPassword[1];
+
+            database.put(address, password);
+        }
+
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < N; i ++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            map.put(st.nextToken(), st.nextToken());
+        for (int i = 0; i < M; i ++) {
+            String address = br.readLine();
+            sb.append(database.get(address))
+                .append("\n");
         }
 
-        for(int i = 0; i < M; i ++) {
-            String addr = br.readLine();
-            sb.append(map.get(addr)).append("\n");
-        }
         System.out.println(sb);
     }
 }
+
