@@ -1,44 +1,46 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
-    
+class Main {
+
+    private static int N;
+    private static int M;
     private static StringBuilder sb = new StringBuilder();
     private static boolean[] visited;
-    private static int maxNumber;
-    private static int maxLength;
+    private static int[] results;
     
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        maxNumber = Integer.parseInt(st.nextToken());
-        maxLength = Integer.parseInt(st.nextToken());
-        visited = new boolean[maxNumber + 1];
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        visited = new boolean[N + 1];
+        results = new int[M];
+        dfs(0);
 
-        solve(new ArrayDeque<>());
-
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
-    private static void solve(Deque<Integer> numbers) {
-        if (numbers.size() == maxLength) {
-            for (int number : numbers) {
-                sb.append(number).append(" ");
+    private static void dfs(int depth) {
+        if (depth == M) {
+            for (int i = 0; i < M; i ++) {
+                sb.append(results[i])
+                    .append(" ");
             }
             sb.append("\n");
+
             return;
         }
 
-        for (int i = 1; i <= maxNumber; i ++) {
+        for (int i = 1; i <= N; i ++) {
             if (!visited[i]) {
-                numbers.addLast(i);
                 visited[i] = true;
-
-                solve(numbers);
-
-                numbers.removeLast();
+                results[depth] = i;
+                dfs(depth + 1);
                 visited[i] = false;
+                results[depth] = 0;
             }
         }
     }
 }
+
