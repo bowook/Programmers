@@ -12,20 +12,19 @@ class Main {
         Set<String> students = new LinkedHashSet<>();
         for (int i = 0; i < L; i ++) {
             String studentNumber = br.readLine();
-            if (students.contains(studentNumber)) {
-                students.remove(studentNumber);
-            }
+            students.remove(studentNumber);
             students.add(studentNumber);
         }
 
-        List<String> list = new ArrayList<>(students);
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < K; i ++) {
-            if (i >= list.size()) {
+        int count = 0;
+        for (String student : students) {
+            if (count == K) {
                 break;
             }
-            sb.append(list.get(i))
+            sb.append(student)
                 .append("\n");
+            count ++;
         }
 
         System.out.println(sb);
