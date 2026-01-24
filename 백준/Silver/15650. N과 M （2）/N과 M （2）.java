@@ -1,44 +1,39 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.io.IOException;
+import java.util.*;
+import java.io.*;
 
-public class Main {
+class Main {
 
-    public static int[] arr;
-    public static int N, M;
-    public static StringBuilder sb = new StringBuilder();
-
+    private static int[] numbers;
+    private static int N,M;
+    private static StringBuilder sb = new StringBuilder();
+    
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        arr = new int[M];
+        numbers = new int[M];
+        dfs(0, 1);
 
-        dfs(1, 0);
         System.out.println(sb);
-
     }
 
-    public static void dfs(int at, int depth) {
-
+    private static void dfs(int depth, int start) {
         if (depth == M) {
-            for (int val : arr) {
-                sb.append(val).append(' ');
+            for (int i = 0; i < M; i ++) {
+                sb.append(numbers[i])
+                    .append(" ");
             }
-            sb.append('\n');
+            sb.append("\n");
+
             return;
         }
 
-        for (int i = at; i <= N; i++) {
-
-            arr[depth] = i;
-            dfs(i + 1, depth + 1);
-
+        for (int i = start; i <= N; i ++) {
+            numbers[depth] = i; 
+            dfs(depth + 1, i + 1);
         }
     }
 }
+
