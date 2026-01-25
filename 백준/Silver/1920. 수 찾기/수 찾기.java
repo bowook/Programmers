@@ -1,57 +1,53 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+class Main {
 
-        int N = Integer.parseInt(scanner.nextLine());
+    private static final int PRESENCE = 1;
+    private static final int NOT_PRESENCE = 0;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
         List<Integer> list = new ArrayList<>();
-        String[] arr = scanner.nextLine().split(" ");
-        for(int i = 0; i < N; i ++) {
-            list.add(Integer.parseInt(arr[i]));
+        for (int i = 0; i < N; i ++) {
+            list.add(Integer.parseInt(st.nextToken()));
         }
-
-        //이진 탐색 사용해야겠다,, 흠..
-        //그러면 정렬이 필요함!
-
         Collections.sort(list);
 
-        int M = Integer.parseInt(scanner.nextLine());
-        String[] arr2 = scanner.nextLine().split(" ");
-
-        for(int i = 0; i < M; i ++) {
-            int target = Integer.parseInt(arr2[i]);
-            if(binarySearch(list,target)) {
-                System.out.println(1);
-            }
-            else {
-                System.out.println(0);
-            }
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < M; i ++) {
+            int value = Integer.parseInt(st.nextToken());
+            sb.append(search(list, value))
+                .append("\n");
         }
+
+        System.out.println(sb);
     }
 
-    public static boolean binarySearch(List<Integer> list, int target) {
-        int left = 0;
-        int right = list.size()-1;
+    private static int search(List<Integer> list, int target) {
+        int low = 0;
+        int high = list.size() - 1;
 
-        while(left <= right) {
-            int mid = left + (right - left) / 2;
-            int midElement = list.get(mid);
+        while (low <= high) {
+            int mid = (low + high) / 2;
 
-            if(midElement == target) {
-                return true;
+            if (target == list.get(mid)) {
+                return PRESENCE;
             }
-            else if (midElement > target) {
-                right = mid -1;
+            else if (target > list.get(mid)) {
+                low = mid + 1;
+                continue;
             }
-            else if (midElement < target) {
-                left = mid + 1;
+            else if (target < list.get(mid)) {
+                high = mid - 1;
+                continue;
             }
         }
 
-        return false;
+        return NOT_PRESENCE;
     }
 }
