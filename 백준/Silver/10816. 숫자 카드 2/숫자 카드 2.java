@@ -1,32 +1,70 @@
 import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        //N은 상근이가 가지고 있는 수자 카드의 개수
-        int N = Integer.parseInt(scanner.nextLine());
-        //둘째 줄에는 상근이 가지고 있는 숫자 카드들
-        String[] temp = scanner.nextLine().split(" ");
-        int[] cards = new int[temp.length];
-
-        Map<Integer,Integer> map = new HashMap<>();
-
-        for(int i = 0; i < cards.length; i ++) {
-            cards[i] = Integer.parseInt(temp[i]);
-            map.put(cards[i], map.getOrDefault(cards[i],0) + 1);
+// The main method must be in a class named "Main".
+class Main {
+    
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        int[] cards = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i ++) {
+            cards[i] = Integer.parseInt(st.nextToken());
+        }
+        int M = Integer.parseInt(br.readLine());
+        int[] targetCards = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i ++) {
+            targetCards[i] = Integer.parseInt(st.nextToken());
         }
 
-        int M = Integer.parseInt(scanner.nextLine());
-        String[] temp2 = scanner.nextLine().split(" ");
+        Arrays.sort(cards);
 
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < M; i++) {
-            int target = Integer.parseInt(temp2[i]);
-            result.append(map.getOrDefault(target, 0)).append(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int targetCard : targetCards) {
+            int counts = searchUpperBound(cards, targetCard) - searchLowerBound(cards, targetCard);
+            sb.append(counts)
+                .append(" ");
         }
 
-        System.out.println(result.toString().trim());
+        System.out.println(sb.toString().trim());
+    }
 
+    private static int searchLowerBound(int[] cards, int targetCard) {
+        int base = 0;
+        int high = cards.length;
+
+        while (base < high) {
+            int mid = (base + high) / 2;
+
+            if (cards[mid] >= targetCard) {
+                high = mid;
+            }
+            else{
+                base = mid + 1;
+            }
+        }
+
+        return base;
+    }
+    
+    private static int searchUpperBound(int[] cards, int targetCard) {
+        int base = 0;
+        int high = cards.length;
+
+        while (base < high) {
+            int mid = (base + high) / 2;
+
+            if (cards[mid] > targetCard) {
+                high = mid;
+            }
+            else {
+                base = mid + 1;
+            }
+        }
+
+        return base;
     }
 }
